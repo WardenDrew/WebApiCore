@@ -4,6 +4,13 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<PackageId>WardenDrew.$(AssemblyName)</PackageId>
+		<Authors>WardenDrew</Authors>
+		<Company>WardenDrew</Company>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/WardenDrew/WebApiCore</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/WardenDrew/WebApiCore</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -11,6 +18,13 @@
 		<PackageReference Include="MediatR" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
