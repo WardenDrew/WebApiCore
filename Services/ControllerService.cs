@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WebApiCore.Extensions;
 using WebApiCore.Models;
 
@@ -34,10 +35,12 @@ namespace WebApiCore.Services
 	public class ControllerService : IControllerService, IServiceScanningScopedImplementation
 	{
 		private readonly IMediator mediator;
+		private readonly IOptions<WebApiCoreOptions> options;
 
-		public ControllerService(IMediator mediator)
+		public ControllerService(IMediator mediator, IOptions<WebApiCoreOptions> options)
 		{
 			this.mediator = mediator;
+			this.options = options;
 		}
 
 		public async Task<IActionResult> Request<TResult>(IRequest<TResult> request) where TResult : IResponse
@@ -46,7 +49,7 @@ namespace WebApiCore.Services
 
 			ContentResult cResult = new ContentResult();
 			cResult.StatusCode = result.CalculateStatusCode();
-			cResult.Content = result.Serialize();
+			cResult.Content = result.Serialize(options.Value.ResponseSerializerSettings);
 			cResult.ContentType = System.Net.Mime.MediaTypeNames.Application.Json;
 
 			return cResult;
@@ -57,7 +60,7 @@ namespace WebApiCore.Services
 			IResponse response = await mediator.Send(request);
 
 			return Results.Extensions.ContentStatus(
-				content: response.Serialize(),
+				content: response.Serialize(options.Value.ResponseSerializerSettings),
 				contentType: System.Net.Mime.MediaTypeNames.Application.Json,
 				contentEncoding: System.Text.Encoding.UTF8,
 				statusCode: response.CalculateStatusCode());

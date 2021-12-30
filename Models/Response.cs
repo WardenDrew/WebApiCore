@@ -114,16 +114,16 @@ namespace WebApiCore.Models
 		/// <inheritdoc/>
 		public string Serialize()
 		{
-			return JsonConvert.SerializeObject(this, GetType(), new JsonSerializerSettings()
-			{
-				ContractResolver = new DefaultContractResolver()
-				{
-					NamingStrategy = new CamelCaseNamingStrategy()
-				}
-			});
+			return Serialize(new JsonSerializerSettings());
 		}
 
 		/// <inheritdoc/>
-		public new string ToString() => Serialize();
+		public string Serialize(JsonSerializerSettings serializerSettings)
+		{
+			return JsonConvert.SerializeObject(this, GetType(), serializerSettings);
+		}
+
+		/// <inheritdoc/>
+		public new string ToString() => Serialize(new JsonSerializerSettings());
 	}
 }

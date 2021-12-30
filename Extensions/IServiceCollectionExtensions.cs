@@ -11,9 +11,18 @@ namespace WebApiCore.Extensions
 	{
 		public static IServiceCollection AddWebApiCore(this IServiceCollection services)
 		{
+			return services.AddWebApiCore(options =>
+            {
+				options = new WebApiCoreOptions();
+            });
+		}
+
+		public static IServiceCollection AddWebApiCore(this IServiceCollection services, Action<WebApiCoreOptions> options)
+		{
+			services.Configure(options);
 			return services.ScanAssemblies(WebApiCore.AssemblyMarker.Assembly);
 		}
-		
+
 		public static IServiceCollection ScanAssemblies(this IServiceCollection services, params Assembly[] assemblies)
 		{
 			Dictionary<Type, Type> scopedServices = LocateTypes(typeof(IServiceScanningScopedImplementation), assemblies);

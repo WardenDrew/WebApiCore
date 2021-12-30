@@ -1,4 +1,6 @@
-﻿namespace WebApiCore.Models
+﻿using Newtonsoft.Json;
+
+namespace WebApiCore.Models
 {
     public interface IResponse
     {
@@ -51,13 +53,20 @@
 		public int CalculateStatusCode();
 
 		/// <summary>
-		/// Used by the Middleware to serialize the result.
+		/// Serialize the Response using the default json serialization settings
 		/// </summary>
 		/// <returns></returns>
 		public string Serialize();
 
 		/// <summary>
-		/// Override of ToString, should generally call Serialize()
+		/// Serialize the Response with the specified json serialization settings
+		/// </summary>
+		/// <param name="serializerSettings"></param>
+		/// <returns></returns>
+		public string Serialize(JsonSerializerSettings serializerSettings);
+
+		/// <summary>
+		/// Override of ToString, should generally call Serialize(). Uses the default json serialization settings
 		/// </summary>
 		/// <returns></returns>
 		public string ToString();
