@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +21,36 @@ namespace WebApiCore.Extensions
 
 		public static IServiceCollection AddWebApiCore(this IServiceCollection services, Action<WebApiCoreOptions> options)
 		{
+			// Build options here to get properties needed for service configuration
+			WebApiCoreOptions webApiCoreOptions = new();
+			options.Invoke(webApiCoreOptions);
+			
+			// Add WebApiCoreOptions to IOptions services
 			services.Configure(options);
-			return services.ScanAssemblies(WebApiCore.AssemblyMarker.Assembly);
+
+			// Configure MediatR if assemblies were provided
+			if (webApiCoreOptions.MediatRAssembliesToScan.Count > 0)
+            {
+				if (webApiCoreOptions.MediatRServiceConfiguration is not null)
+                {
+					services.AddMediatR(webApiCoreOptions.MediatRServiceConfiguration, webApiCoreOptions.MediatRAssembliesToScan.ToArray());
+                }
+				else
+                {
+					services.AddMediatR(webApiCoreOptions.MediatRAssembliesToScan.ToArray());
+                }
+            }
+
+			// Add our assembly to the list to scan for services if its not already there
+			if (!webApiCoreOptions.ServiceScanningAssembliesToScan.Contains(WebApiCore.AssemblyMarker.Assembly))
+			{
+				webApiCoreOptions.ServiceScanningAssembliesToScan.Add(WebApiCore.AssemblyMarker.Assembly);
+			}
+
+			// Scan assemblies for services
+			services.ScanAssemblies(webApiCoreOptions.ServiceScanningAssembliesToScan.ToArray());
+			
+			return services;
 		}
 
 		public static IServiceCollection ScanAssemblies(this IServiceCollection services, params Assembly[] assemblies)

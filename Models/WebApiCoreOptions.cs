@@ -14,6 +14,9 @@ namespace WebApiCore.Models
         /// SerializerSettings to be used 
         /// </summary>
         public JsonSerializerSettings ResponseSerializerSettings { get; set; }
+        public Action<MediatR.MediatRServiceConfiguration>? MediatRServiceConfiguration { get; set; }
+        public List<System.Reflection.Assembly> MediatRAssembliesToScan { get; set; }
+        public List<System.Reflection.Assembly> ServiceScanningAssembliesToScan { get; set; }
 
         /// <summary>
         /// New Default Options
@@ -21,6 +24,9 @@ namespace WebApiCore.Models
         public WebApiCoreOptions()
         {
             ResponseSerializerSettings = new();
+            MediatRServiceConfiguration = null;
+            MediatRAssembliesToScan = new();
+            ServiceScanningAssembliesToScan = new();
         }
     }
 }
