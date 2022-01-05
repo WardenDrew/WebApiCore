@@ -27,6 +27,11 @@ namespace WebApiCore.Services
 
 				foreach (TypeInfo providerType in errorCodeProviderTypes)
 				{
+					if (providerType.ContainsGenericParameters)
+					{
+						throw new InvalidOperationException($"Error Code provider classes must not be contained inside a generic class as generic classes cannot be instantiated through reflection: {providerType.FullName}");
+					}
+					
 					List<object?> fieldValues = providerType.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
 						.Where(x => typeof(IErrorCode).IsAssignableFrom(x.FieldType))
 						.Where(x => x.IsInitOnly)

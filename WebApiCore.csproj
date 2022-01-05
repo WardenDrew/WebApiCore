@@ -11,8 +11,9 @@
 		<RepositoryUrl>https://github.com/WardenDrew/WebApiCore</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/WardenDrew/WebApiCore</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Description>Core library to standardize commonly created helper models and classes.</Description>
+		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup>
